@@ -1,20 +1,21 @@
 import Point from './point.js';
 
 class Polyline {
-  constructor (color, speed = 4) {
+  constructor (color, nbPoints = 2, close = false, speed = 4) {
+    this.close = close;
     this.color = color;
-    this.p1 = new Point(speed);
-    this.p2 = new Point(speed);
+    this.points = [];
+    for (let i = 0; i < nbPoints; i++) {
+      this.points.push(new Point(speed));
+    }
   }
 
   init (boundsWidth, boundsHeight) {
-    this.p1.init(boundsWidth, boundsHeight);
-    this.p2.init(boundsWidth, boundsHeight);
+    this.points.forEach(point => point.init(boundsWidth, boundsHeight));
   }
 
   update (boundsWidth, boundsHeight) {
-    this.p1.update(boundsWidth, boundsHeight);
-    this.p2.update(boundsWidth, boundsHeight);
+    this.points.forEach(point => point.update(boundsWidth, boundsHeight));
   }
 
   draw (context) {
@@ -23,8 +24,15 @@ class Polyline {
     context.lineCap = 'round';
 
     context.beginPath();
-    context.moveTo(this.p1.x, this.p1.y);
-    context.lineTo(this.p2.x, this.p2.y);
+    context.moveTo(this.points[0].x, this.points[0].y);
+    for (let i = 1; i < this.points.length; i++) {
+      context.lineTo(this.points[i].x, this.points[i].y);
+    }
+
+    if (this.close) {
+      context.closePath();
+    }
+
     context.stroke();
   }
 }
