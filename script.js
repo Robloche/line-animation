@@ -1,4 +1,5 @@
 import Polyline from './polyline.js';
+import Point from './point.js';
 
 let canvas;
 let ctx;
@@ -27,7 +28,7 @@ const draw = () => {
 
 const animate = () => {
   for (const line of lines) {
-    line.update(cssWidth, cssHeight);
+    line.update();
   }
 
   draw();
@@ -39,17 +40,20 @@ const resizeCanvas = () => {
   const rect = canvas.getBoundingClientRect();
 
   // Update available sizes
-  cssWidth = rect.width;
   cssHeight = rect.height;
+  cssWidth = rect.width;
+
+  Point.boundsHeight = cssHeight;
+  Point.boundsWidth = cssWidth;
 
   // Set internal resolution scaled by HiDPI ratio
-  const targetWidth = Math.floor(rect.width * dpr);
   const targetHeight = Math.floor(rect.height * dpr);
+  const targetWidth = Math.floor(rect.width * dpr);
 
   // Avoid re-allocating buffer memory if internal size hasn't changed
-  if (canvas.width !== targetWidth || canvas.height !== targetHeight) {
-    canvas.width = targetWidth;
+  if (canvas.height !== targetHeight || canvas.width !== targetWidth) {
     canvas.height = targetHeight;
+    canvas.width = targetWidth;
     ctx.scale(dpr, dpr);
 
     // Initial background fill to ensure buffer isn't transparent
@@ -88,7 +92,7 @@ const initialize = () => {
   window.addEventListener('resize', handleResize);
 
   for (const line of lines) {
-    line.init(cssWidth, cssHeight);
+    line.init();
   }
 
   animate();

@@ -1,6 +1,9 @@
 import { getRandom, getRandomStep } from './helper.js';
 
 class Point {
+  static boundsWidth = 0;
+  static boundsHeight = 0;
+
   constructor (x = 0, y = 0, dx = 0, dy = 0, speed = 4) {
     this.speed = speed;
     this.x = x;
@@ -9,14 +12,14 @@ class Point {
     this.dy = dy;
   }
 
-  init (boundsWidth, boundsHeight) {
-    this.x = getRandom(0, boundsWidth);
-    this.y = getRandom(0, boundsHeight);
+  init () {
+    this.x = getRandom(0, Point.boundsWidth);
+    this.y = getRandom(0, Point.boundsHeight);
     this.dx = getRandomStep(this.speed);
     this.dy = getRandomStep(this.speed);
   }
 
-  update (boundsWidth, boundsHeight) {
+  update () {
     this.x += this.dx;
     this.y += this.dy;
 
@@ -24,8 +27,8 @@ class Point {
     if (this.x <= 0) {
       this.x = 0;
       this.dx *= -1;
-    } else if (this.x >= boundsWidth) {
-      this.x = boundsWidth;
+    } else if (this.x >= Point.boundsWidth) {
+      this.x = Point.boundsWidth;
       this.dx *= -1;
     }
 
@@ -33,8 +36,8 @@ class Point {
     if (this.y <= 0) {
       this.y = 0;
       this.dy *= -1;
-    } else if (this.y >= boundsHeight) {
-      this.y = boundsHeight;
+    } else if (this.y >= Point.boundsHeight) {
+      this.y = Point.boundsHeight;
       this.dy *= -1;
     }
   }

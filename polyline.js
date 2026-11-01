@@ -10,12 +10,12 @@ class Polyline {
     }
   }
 
-  init (boundsWidth, boundsHeight) {
-    this.points.forEach(point => point.init(boundsWidth, boundsHeight));
+  init () {
+    this.points.forEach(point => point.init());
   }
 
-  update (boundsWidth, boundsHeight) {
-    this.points.forEach(point => point.update(boundsWidth, boundsHeight));
+  update () {
+    this.points.forEach(point => point.update());
   }
 
   draw (context) {
