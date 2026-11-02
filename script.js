@@ -4,17 +4,36 @@ import Point from './point.js';
 let canvas;
 let ctx;
 
+let startTime = null;
+
 let isResizePending = false;
 let resizeTimeout = null;
 
 let cssWidth = 0;
 let cssHeight = 0;
 
+const circleMove = (x, y, radius) => {
+  return (p, t) => {
+    const localT = t % (Math.PI * 2);
+
+    p.x = x + Math.cos(localT) * radius;
+    p.y = y + Math.sin(localT) * radius;
+  };
+};
+
+// const lines = [
+//   new Polyline({
+//     color: '#007ACC',
+//     nbPoints: 2,
+//     updaters: [circleMove(500, 300, 100), circleMove(800, 500, 50)]
+//   })
+// ];
+
 const lines = [
-  new Polyline('#007ACC', 3, true, 4),
-  new Polyline('#00FFCC', 4, true, 6),
-  new Polyline('#FF007A', 3, false, 5),
-  new Polyline('#FFCC00', 2, false, 3.5)
+  new Polyline({ close: true, color: '#007ACC', nbPoints: 3 }),
+  new Polyline({ close: true, color: '#00FFCC', nbPoints: 4, speed: 6 }),
+  new Polyline({ color: '#FF007A', nbPoints: 3, speed: 5 }),
+  new Polyline({ color: '#FFCC00', nbPoints: 2, speed: 3.5 })
 ];
 
 const draw = () => {
@@ -26,9 +45,15 @@ const draw = () => {
   }
 };
 
-const animate = () => {
+const animate = (timestamp) => {
+  if (!startTime) {
+    startTime = timestamp;
+  }
+
+  const t = (timestamp - startTime) / 1_000;
+
   for (const line of lines) {
-    line.update();
+    line.update(t);
   }
 
   draw();

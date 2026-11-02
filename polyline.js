@@ -1,12 +1,12 @@
 import Point from './point.js';
 
 class Polyline {
-  constructor (color, nbPoints = 2, close = false, speed = 4) {
+  constructor ({ close = false, color, nbPoints = 2, speed = 4, updaters }) {
     this.close = close;
     this.color = color;
     this.points = [];
     for (let i = 0; i < nbPoints; i++) {
-      this.points.push(new Point(speed));
+      this.points.push(new Point({ speed, updater: updaters && updaters[i] }));
     }
   }
 
@@ -14,8 +14,8 @@ class Polyline {
     this.points.forEach(point => point.init());
   }
 
-  update () {
-    this.points.forEach(point => point.update());
+  update (t) {
+    this.points.forEach(point => point.update(t));
   }
 
   draw (context) {
