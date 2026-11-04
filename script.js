@@ -12,32 +12,40 @@ let resizeTimeout = null;
 let cssWidth = 0;
 let cssHeight = 0;
 
+const lines = [];
+
 const circleMove = (x, y, radius) => {
-  return (p, t) => {
-    const localT = t % (Math.PI * 2);
+  return (p, t, speed) => {
+    const localT = (t * speed) % (Math.PI * 2);
 
     p.x = x + Math.cos(localT) * radius;
     p.y = y + Math.sin(localT) * radius;
   };
 };
 
-// const lines = [
-//   new Polyline({
-//     color: '#007ACC',
-//     nbPoints: 2,
-//     updaters: [circleMove(500, 300, 100), circleMove(800, 500, 50)]
-//   })
-// ];
+const setAnimation1 = () => {
+  lines.push(new Polyline({
+    close: true,
+    color: '#007ACC',
+    nbPoints: 3,
+    speed: 4,
+    updaters: [
+      circleMove(500, 300, 100),
+      circleMove(800, 300, 100),
+      circleMove(650, 600, 100)
+    ]
+  }));
+};
 
-const lines = [
-  new Polyline({ close: true, color: '#007ACC', nbPoints: 3 }),
-  new Polyline({ close: true, color: '#00FFCC', nbPoints: 4, speed: 6 }),
-  new Polyline({ color: '#FF007A', nbPoints: 3, speed: 5 }),
-  new Polyline({ color: '#FFCC00', nbPoints: 2, speed: 3.5 })
-];
+const setAnimation2 = () => {
+  lines.push(new Polyline({ close: true, color: '#007ACC', nbPoints: 3 }));
+  lines.push(new Polyline({ close: true, color: '#00FFCC', nbPoints: 4, speed: 6 }));
+  lines.push(new Polyline({ color: '#FF007A', nbPoints: 3, speed: 5 }));
+  lines.push(new Polyline({ color: '#FFCC00', nbPoints: 2, speed: 3.5 }));
+};
 
 const draw = () => {
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
   ctx.fillRect(0, 0, cssWidth, cssHeight);
 
   for (const line of lines) {
@@ -115,6 +123,9 @@ const initialize = () => {
 
   resizeCanvas();
   window.addEventListener('resize', handleResize);
+
+  //setAnimation1();
+  setAnimation2();
 
   for (const line of lines) {
     line.init();

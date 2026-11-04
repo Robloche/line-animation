@@ -44,7 +44,7 @@ class Point {
   }
 
   update (t) {
-    this.updater(this, t);
+    this.updater(this, t, this.speed);
   }
 }
 
