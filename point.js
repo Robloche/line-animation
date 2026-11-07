@@ -13,14 +13,14 @@ class Point {
     this.updater = updater ?? Point.defaultUpdater;
   }
 
-  init () {
+  init = () => {
     this.x = getRandom(0, Point.boundsWidth);
     this.y = getRandom(0, Point.boundsHeight);
     this.dx = getRandomStep(this.speed);
     this.dy = getRandomStep(this.speed);
-  }
+  };
 
-  static defaultUpdater (p) {
+  static defaultUpdater = (p) => {
     p.x += p.dx;
     p.y += p.dy;
 
@@ -41,11 +41,11 @@ class Point {
       p.y = Point.boundsHeight;
       p.dy *= -1;
     }
-  }
+  };
 
-  update (t) {
+  update = (t) => {
     this.updater(this, t, this.speed);
-  }
+  };
 }
 
 export default Point;

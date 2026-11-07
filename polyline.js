@@ -10,15 +10,15 @@ class Polyline {
     }
   }
 
-  init () {
+  init = () => {
     this.points.forEach(point => point.init());
-  }
+  };
 
-  update (t) {
+  update = (t) => {
     this.points.forEach(point => point.update(t));
-  }
+  };
 
-  draw (context) {
+  draw = (context) => {
     context.strokeStyle = this.color;
     context.lineWidth = 1;
     context.lineCap = 'round';
@@ -34,7 +34,7 @@ class Polyline {
     }
 
     context.stroke();
-  }
+  };
 }
 
 export default Polyline;
